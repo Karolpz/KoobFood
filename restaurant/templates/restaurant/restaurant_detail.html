@@ -1,0 +1,15 @@
+{%extends "home/base.html" %}
+
+{% block title %}Détail des restaurants{% endblock %}
+
+{% block content %}
+<h2>{{restaurant_detail.name}}</h2>
+<p>{{restaurant_detail.description}}</p>
+<p>Lieu: {{restaurant_detail.location}}</p> 
+<p> Note : {{restaurant_detail.reviews}}/5</p>
+<p>Numéro de téléphone : {{restaurant_detail.phone_number}}</p>
+    <a href="{% url 'reservation:reservation_create' restaurant_detail.id %}">
+        <strong>Réserver une table</strong>
+    </a><br>
+
+{% endblock %}

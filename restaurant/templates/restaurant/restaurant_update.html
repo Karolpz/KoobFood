@@ -1,0 +1,15 @@
+{% extends "home/base.html" %}
+
+{% block title %}Mettre à jour le restaurant{% endblock %}
+
+{% block content %} 
+<h2>Mise à jour du restaurant</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Enregistrer</button>    
+</form>
+
+<a href="{% url 'restaurant:restaurant_manager_detail' form.instance.pk %}">Annuler</a>
+
+{% endblock %}

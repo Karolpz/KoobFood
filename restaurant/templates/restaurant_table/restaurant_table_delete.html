@@ -1,0 +1,13 @@
+{%extends "home/base.html" %}
+
+{% block title %}Supprimer une table{% endblock %}
+
+{% block content %}
+<h2>Supprimer une table</h2>
+<p>Êtes-vous sûr de vouloir supprimer la table {{ object.name }} ? Cette action est irréversible.</p>
+<form method="post">   
+    {% csrf_token %}
+    <button type="submit">Confirmer la suppression</button>
+    <a href="{% url 'restaurant:restaurant_manager_list' %}">Annuler</a>
+</form>
+{% endblock %}

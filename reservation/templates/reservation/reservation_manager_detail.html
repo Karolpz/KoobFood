@@ -1,0 +1,22 @@
+{% extends "home/base.html" %}
+
+{% block title %}Détail de la réservation{% endblock %}
+
+{% block content %}
+<h2>Détail de la réservation</h2>
+<p><strong>Restaurant :</strong> {{ reservation.reservation.restaurant.name }}</p>
+<p><strong>Date et heure :</strong> {{ reservation.reservation.reservation_date|date:"d/m/Y H:i" }}</p>
+<p><strong>Nombre de personnes :</strong> {{ reservation.reservation.number_of_people }}</p>
+<p><strong>Table assignée :</strong> {{ reservation.restaurant_table.table_number }}</p>
+{% if reservation.reservation.customer_message %}
+    <p><strong>Message du client :</strong> {{ reservation.reservation.customer_message }}</p>
+{% endif %}
+
+<h2>Informations sur le client</h2>
+<p><strong>Nom :</strong> {{ reservation.reservation.customuser.first_name }}</p>
+<p><strong>Prénom :</strong> {{ reservation.reservation.customuser.last_name }}</p>
+<p><strong>Email :</strong> {{ reservation.reservation.customuser.email }}</p>
+<p><strong>Téléphone :</strong> {{ reservation.reservation.customuser.phone_number }}</p>
+
+<a href="{% url 'reservation:reservation_manager_list' reservation.reservation.restaurant.pk %}">Retour à la liste des réservations</a>
+{% endblock %}

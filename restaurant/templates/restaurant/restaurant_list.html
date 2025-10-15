@@ -1,0 +1,32 @@
+{% extends "home/base.html" %}
+
+{% block title %}Liste des Restaurants{% endblock %}
+
+{% block content %}
+<h2>Liste des Restaurants</h2>
+<ul>
+    {% for restaurant in restaurant_list %}
+        <li><a href="{% url 'restaurant:restaurant_detail' restaurant.pk %}" >{{ restaurant.name }} - {{ restaurant.location }}<a></li>
+    {% empty %}
+        <li>Aucun restaurant trouvé.</li>
+    {% endfor %}    
+</ul>   
+
+<div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+{% endblock %}

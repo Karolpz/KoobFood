@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}KoobFood{% endblock %}</title>
+</head>
+<body>
+    <header>
+        <h1>Bienvenue sur KoobFood</h1>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="{% url 'home:home' %}">Accueil</a></li>
+            <li><a href="{% url 'restaurant:restaurants_list' %}">Restaurants</a></li>
+            <li><a href="{% url 'admin:index' %}">Admin</a></li>
+            {% if user.is_authenticated %}
+                <form action="{% url 'users:logout' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit">Déconnexion</button>
+                </form>
+            {% else %}
+                <li><a href="{% url 'users:login' %}">Se connecter</a></li>
+                <li><a href="{% url 'users:signup' %}">S'inscrire</a></li>
+            {% endif %}
+            {% if user.is_authenticated and perms.restaurant.add_restaurant %}
+                <li><a href="{% url 'restaurant:restaurant_create' %}">Ajouter un restaurant</a></li>
+            {% endif %}
+            {% if user.is_authenticated and perms.restaurant.view_restaurant %}
+                <li><a href="{% url 'restaurant:restaurant_manager_list' %}">Mes Restaurants</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; 2025 KoobFood</p>
+    </footer>
+    
+</body>
+</html>

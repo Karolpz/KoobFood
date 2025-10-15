@@ -1,0 +1,12 @@
+{% extends "home/base.html" %}
+{% block title %}Réservation réussie{% endblock %}
+
+{% block content %}
+<p>Merci {{ user.username }} pour votre réservation dans le restaurant {{ restaurant.name }} pour {{ reservation.number_of_people }} personne(s) !</p>
+<p>Date et heure : {{ reservation.reservation_date }}h</p>
+<strong>A très vite !</strong>
+{% endblock %}
+
+
+
+

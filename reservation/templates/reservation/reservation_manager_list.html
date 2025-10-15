@@ -1,0 +1,51 @@
+{% extends "home/base.html" %}
+
+{% block title %}Liste des Réservations{% endblock %}
+
+{% block content %}
+<h2>Liste des réservations pour {{restaurant.name}}</h2>
+
+<h3>Aujourd'hui ({{ today_reservations.count }})</h3>
+<ul>
+    {% for reservation in today_reservations %}
+        <li>
+            {{ reservation }}
+            {% if reservation.customer_message %}
+                Message du client : {{ reservation.customer_message }}
+            {% endif %}
+            <a href="{% url 'reservation:reservation_manager_detail' reservation.pk %}">Détails</a>
+        </li>
+    {% empty %}
+        <li>Aucune réservation aujourd'hui.</li>
+    {% endfor %}
+</ul>
+
+
+<h3>À venir</h3>
+<ul>
+    {% for reservation in upcoming_reservations %}
+        <li>
+             {{ reservation }}
+            {% if reservation.customer_message %}
+                Message du client : {{ reservation.customer_message }}
+            {% endif %}
+            <a href="{% url 'reservation:reservation_manager_detail' reservation.pk %}">Détails</a>
+        </li>
+    {% empty %}
+        <li>Aucune réservation à venir.</li>
+    {% endfor %}
+</ul>
+
+
+<h3>Passées</h3>
+<ul>
+    {% for reservation in past_reservations %}
+        <li>
+             {{ reservation }}
+            <a href="{% url 'reservation:reservation_manager_detail' reservation.pk %}">Détails</a>
+        </li>
+    {% empty %}
+        <li>Aucune réservation passée.</li>
+    {% endfor %}
+</ul>
+{% endblock %}

@@ -1,0 +1,16 @@
+{%extends "home/base.html" %}
+
+{% block title %}Gestion des Restaurants{% endblock %}
+
+{% block content %}
+<h2>Mes Restaurants</h2>
+<ul>
+    {% for restaurant in restaurant_list %}
+        <li><a href="{% url 'restaurant:restaurant_manager_detail' restaurant.pk %}" >{{ restaurant.name }} - {{ restaurant.location }}<a>
+            <a href="{% url 'reservation:reservation_manager_list' restaurant.pk %}">Voir les réservations</a>    
+        </li>
+    {% empty %}
+        <li>Aucun restaurant trouvé.</li>
+    {% endfor %}
+</ul>
+{% endblock %}

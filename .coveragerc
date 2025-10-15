@@ -1,0 +1,16 @@
+[run]
+omit =
+    */migrations/*
+    */tests/*
+    */__init__.py
+    */apps.py
+    */admin.py
+    */urls.py
+    manage.py
+    koobfood/settings.py
+
+[report]
+# Pour ne pas afficher les fichiers 100% ignorés
+exclude_lines =
+    pragma: no cover
+    if __name__ == .__main__.:

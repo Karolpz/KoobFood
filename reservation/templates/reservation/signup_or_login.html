@@ -1,0 +1,11 @@
+{% extends "home/base.html" %}
+
+{% block title %}Connexion ou Inscription{% endblock %}
+
+{% block content %}
+
+<h2>Veuillez vous connecter ou vous inscrire pour continuer</h2>
+<a href="{% url 'users:login' %}?next={{ next }}">Se connecter</a>
+<a href="{% url 'users:signup' %}?next={{ next }}">S'inscrire</a>
+
+{% endblock %}

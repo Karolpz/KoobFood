@@ -1,0 +1,12 @@
+{% extends "home/base.html" %}
+
+{% block title %}Informations client{% endblock %}
+
+{% block content %}
+<h2>Formulaire d'informations client</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Suivant</button>
+</form>
+{% endblock %}

@@ -1,0 +1,13 @@
+{%extends "home/base.html" %}
+
+{% block title %}Modifier une table{% endblock %}
+
+{% block content %}
+<h2>Modifier une table</h2>
+<form method="post">   
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Enregistrer</button>
+    <a href="{% url 'restaurant:restaurant_manager_list' %}">Annuler</a>
+</form>
+{% endblock %}

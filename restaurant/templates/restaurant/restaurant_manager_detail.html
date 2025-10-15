@@ -1,0 +1,32 @@
+{%extends "home/base.html" %}
+
+{% block title %}Détail des restaurants{% endblock %}
+
+{% block content %}
+<h2>{{restaurant_detail.name}}</h2>
+<p>{{restaurant_detail.description}}</p>
+<p>Lieu: {{restaurant_detail.location}}</p> 
+<p> Note : {{restaurant_detail.reviews}}/5</p>
+<p>Numéro de téléphone : {{restaurant_detail.phone_number}}</p>
+
+<a href="{% url 'restaurant:restaurant_update' restaurant_detail.pk %}">Modifier le restaurant</a>
+<a href="{% url 'restaurant:restaurant_delete' restaurant_detail.pk %}">Supprimer le restaurant</a><br>
+<a href="{% url 'restaurant:restaurant_table_create' restaurant_detail.pk %}">Ajouter une table</a>
+
+<h3>Tables disponibles</h3>
+    <ul>    
+        {% for table in restaurant_tables %}
+            <li>
+                Table n°{{ table.table_number }} - Capacité: {{ table.seats }} personnes - 
+                {% if table.is_available %}Disponible{% else %}Non disponible{% endif %}
+                
+                    <a href="{% url 'restaurant:restaurant_table_update' table.pk %}">Modifier</a>
+
+                    <a href="{% url 'restaurant:restaurant_table_delete' table.pk %}">Supprimer</a>
+            </li>
+        {% empty %}
+            <li>Aucune table disponible.</li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}
