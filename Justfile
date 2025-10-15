@@ -19,7 +19,7 @@ superuser:
 
 # Lancer les tests
 test *args='':
-    uv run python manage.py test $@
+    uv run python manage.py test {{args}}
 
 # Lancer les tests avec coverage
 coverage :
@@ -32,6 +32,18 @@ report:
 # Nettoyer les fichiers inutiles
 clean:
     Get-ChildItem -Recurse -Include "__pycache__", "*.pyc" | Remove-Item -Recurse -Force
+
+# Installer les dépendances
+install-deps:
+    uv add -r requirements.txt
+
+# Supprimer les dépendances
+remove-deps:
+    uv remove -r requirements.txt
+
+# Installer les packages
+add package:
+    uv add {{package}}
 
 # Installation complète du projet (installe toutes les dépendances via UV)
 init:
