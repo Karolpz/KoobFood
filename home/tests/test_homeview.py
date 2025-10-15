@@ -20,8 +20,10 @@ class HomeViewTests(TestCase):
     def test_home_view_user(self):
         response = self.client.get('/')
         self.assertFalse(response.context['user'].is_authenticated)
+        self.assertNotContains(response, 'Déconnexion')
         self.assertContains(response, 'Se connecter')
         self.assertContains(response, "S'inscrire")
+        self.assertContains(response, 'Restaurants')
 
         user: CustomUserFactory = CustomUserFactory()
         self.client.force_login(user)
