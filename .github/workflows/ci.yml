@@ -8,7 +8,7 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest  # le système sur lequel GitHub Actions tourne
+    runs-on: ubuntu-latest  # le système sur lequel GitHub Actions tourne 1
 
     services:
       postgres:
@@ -49,4 +49,6 @@ jobs:
 
       - name: Lancer les tests
         run: |
-          python manage.py test
+          python manage.py test 
+
+        

@@ -18,11 +18,11 @@ superuser:
     uv run python manage.py createsuperuser
 
 # Lancer les tests
-test:
-    uv run python manage.py test
+test *args='':
+    uv run python manage.py test $@
 
 # Lancer les tests avec coverage
-coverage:
+coverage :
     uv run coverage run manage.py test
 
 # Afficher le rapport de coverage
