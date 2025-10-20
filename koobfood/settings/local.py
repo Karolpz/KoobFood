@@ -11,15 +11,9 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
-from environs import Env
-import dj_database_url
 from .base import *
 
 env.read_env(".env.local")
-
-print("DEBUG:", env.bool("DEBUG"))
-print("SECRET_KEY:", env("SECRET_KEY"))
-print("ALLOWED_HOSTS:", env.list("ALLOWED_HOSTS"))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env("SECRET_KEY")

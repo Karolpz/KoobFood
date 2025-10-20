@@ -1,3 +1,5 @@
+
+
 name: Tests Django (CI)
 
 on:
@@ -14,9 +16,9 @@ jobs:
       postgres:
         image: postgres:14
         env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: 8D33dfa845,
-          POSTGRES_DB: koobfood
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
         ports:
           - 5432:5432
         options: >-
@@ -26,8 +28,8 @@ jobs:
           --health-retries=5
 
     env:
-      DJANGO_SETTINGS_MODULE: koobfood.settings
-      DATABASE_URL: postgres://postgres:postgres@localhost:5432/koobfood
+      DJANGO_SETTINGS_MODULE: koobfood.settings.test
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
     steps:
       - name: Cloner le dépôt
