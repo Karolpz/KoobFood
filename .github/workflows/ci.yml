@@ -30,7 +30,7 @@ jobs:
     env:
       DJANGO_SETTINGS_MODULE: koobfood.settings.test
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
-      SECRET_KEY: ${{ secrets.SECRET_KEY }
+      SECRET_KEY: ${{ secrets.SECRET_KEY }}
 
     steps:
 
