@@ -25,12 +25,20 @@ jobs:
           --health-timeout=5s
           --health-retries=5
 
+    
+
     env:
       DJANGO_SETTINGS_MODULE: koobfood.settings.test
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
-      SECRET_KEY: ${{ secrets.SECRET_KEY }}
+      SECRET_KEY: ${{ secrets.SECRET_KEY }
 
     steps:
+
+      - name: Créer la base de test
+        run: |
+          psql -v ON_ERROR_STOP=1 --username="$POSTGRES_USER" <<-EOSQL
+            CREATE DATABASE koobfood_test;
+          EOSQL
       - name: Cloner le dépôt
         uses: actions/checkout@v3
 
@@ -39,28 +47,24 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Installer Poetry
+      - name: Installer uv
         run: |
-          curl -sSL https://install.python-poetry.org | python3 -
-          export PATH="$HOME/.local/bin:$PATH"
-          poetry --version
+          python -m pip install --upgrade pip
+          pip install uv
 
       - name: Installer les dépendances
         run: |
-          export PATH="$HOME/.local/bin:$PATH"
-          poetry install --no-interaction --no-ansi
-
-        env:
-          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+          uv add -r requirements.txt
 
       - name: Appliquer les migrations
         run: |
-          export PATH="$HOME/.local/bin:$PATH"
-          poetry run python manage.py migrate
+          uv run python manage.py migrate
 
       - name: Lancer les tests
         run: |
-          export PATH="$HOME/.local/bin:$PATH"
-          poetry run python manage.py test
+          uv run python manage.py test
+
+      - name: Lancer les tests avec coverage
+        run: |
+          uv run coverage run manage.py test
+          uv run coverage report
