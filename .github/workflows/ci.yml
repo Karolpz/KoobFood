@@ -34,11 +34,6 @@ jobs:
 
     steps:
 
-      - name: Créer la base de test
-        run: |
-          psql -v ON_ERROR_STOP=1 --username="$POSTGRES_USER" <<-EOSQL
-            CREATE DATABASE koobfood_test;
-          EOSQL
       - name: Cloner le dépôt
         uses: actions/checkout@v3
 
