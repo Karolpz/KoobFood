@@ -47,9 +47,7 @@ jobs:
 
       - name: Créer la base de test
         run: |
-          psql -v ON_ERROR_STOP=1 --username="$POSTGRES_USER" <<-EOSQL
-            CREATE DATABASE IF NOT EXISTS ${POSTGRES_DB}_test;
-          EOSQL
+          PGPASSWORD=$POSTGRES_PASSWORD psql -h localhost -U $POSTGRES_USER -p 5432 -tc "SELECT 1 FROM pg_database WHERE datname = '${POSTGRES_DB}_test'" | grep -q 1 || PGPASSWORD=$POSTGRES_PASSWORD psql -h localhost -U $POSTGRES_USER -p 5432 -c "CREATE DATABASE ${POSTGRES_DB}_test;"
         env:
           POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
