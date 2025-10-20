@@ -46,10 +46,14 @@ jobs:
           uv add -r requirements.txt
 
       - name: Créer la base de test si elle n'existe pas
+        env:
+          PGPASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
         run: |
           echo "Vérification de la base ${POSTGRES_DB}_test..."
-          PGPASSWORD=$POSTGRES_PASSWORD psql -h localhost -U $POSTGRES_USER -p 5432 -tc "SELECT 1 FROM pg_database WHERE datname = '${POSTGRES_DB}_test'" | grep -q 1 || \
-          PGPASSWORD=$POSTGRES_PASSWORD psql -h localhost -U $POSTGRES_USER -p 5432 -c "CREATE DATABASE ${POSTGRES_DB}_test;"
+          psql -h localhost -U $POSTGRES_USER -p 5432 -d postgres -tc "SELECT 1 FROM pg_database WHERE datname = '${POSTGRES_DB}_test'" | grep -q 1 || \
+          psql -h localhost -U $POSTGRES_USER -p 5432 -d postgres -c "CREATE DATABASE ${POSTGRES_DB}_test;"
 
       - name: Appliquer les migrations
         run: uv run python manage.py migrate
