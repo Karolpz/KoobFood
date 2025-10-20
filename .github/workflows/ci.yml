@@ -1,10 +1,10 @@
 name: Tests Django (CI)
 
 on:
-  push:
-    branches: [ "*" ]
   pull_request:
-    branches: [ "*" ]
+    branches: ["*"]
+  push:
+    branches: ["*"]
 
 jobs:
   test:
@@ -20,7 +20,7 @@ jobs:
         ports:
           - 5432:5432
         options: >-
-          --health-cmd="pg_isready"
+          --health-cmd="pg_isready
           --health-interval=10s
           --health-timeout=5s
           --health-retries=5
@@ -45,13 +45,11 @@ jobs:
           pip install uv
           uv add -r requirements.txt
 
-      - name: Créer la base de test
+      - name: Créer la base de test si elle n'existe pas
         run: |
-          PGPASSWORD=$POSTGRES_PASSWORD psql -h localhost -U $POSTGRES_USER -p 5432 -tc "SELECT 1 FROM pg_database WHERE datname = '${POSTGRES_DB}_test'" | grep -q 1 || PGPASSWORD=$POSTGRES_PASSWORD psql -h localhost -U $POSTGRES_USER -p 5432 -c "CREATE DATABASE ${POSTGRES_DB}_test;"
-        env:
-          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+          echo "Vérification de la base ${POSTGRES_DB}_test..."
+          PGPASSWORD=$POSTGRES_PASSWORD psql -h localhost -U $POSTGRES_USER -p 5432 -tc "SELECT 1 FROM pg_database WHERE datname = '${POSTGRES_DB}_test'" | grep -q 1 || \
+          PGPASSWORD=$POSTGRES_PASSWORD psql -h localhost -U $POSTGRES_USER -p 5432 -c "CREATE DATABASE ${POSTGRES_DB}_test;"
 
       - name: Appliquer les migrations
         run: uv run python manage.py migrate
