@@ -7,6 +7,9 @@ from django.shortcuts import redirect
 
 from .models import Restaurant, Restaurant_Table
 
+from rest_framework import generics, viewsets, permissions
+from .serializers import RestaurantSerializer
+
 # ------------------------RESTAURANT MANAGER--------------------------------
 
 class RestaurantManagerMixin(LoginRequiredMixin, PermissionRequiredMixin):
@@ -31,7 +34,7 @@ class RestaurantManagerDetailView(RestaurantManagerMixin, generic.DetailView):
         context['restaurant_tables'] = self.object.tables.all()
         return context
     
-class RestaurantCeateView( RestaurantManagerMixin, generic.CreateView):
+class RestaurantCreateView( RestaurantManagerMixin, generic.CreateView):
     form_class = RestaurantForm
     template_name = 'restaurant/restaurant_create.html'
     permission_required = 'restaurant.add_restaurant'
@@ -113,6 +116,25 @@ class RestaurantTableDeleteView(LoginRequiredMixin, PermissionRequiredMixin, gen
 
     def get_queryset(self):
         return Restaurant_Table.objects.filter(restaurant__manager=self.request.user)
+    
+# ------------------------API VIEWS--------------------------------
+class IsManagerOrReadOnlyPermission(permissions.BasePermission):
+    def has_permission(self, request, view):
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        return request.user.is_authenticated and request.user.groups.filter(name='Manager').exists()
+
+    def has_object_permission(self, request, view, obj):
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        return obj.manager == request.user
+        
+class RestaurantViewSet(viewsets.ModelViewSet):
+    queryset = Restaurant.objects.all()
+    serializer_class = RestaurantSerializer
+    permission_classes = [IsManagerOrReadOnlyPermission]
+    def perform_create(self, serializer):
+        serializer.save(manager=self.request.user)
 
         
     
