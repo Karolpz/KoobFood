@@ -4,8 +4,7 @@ from django.contrib.auth.views import LoginView
 from .models import CustomUser
 from .forms import CustomUserCreationForm, CustomUserConnectionForm
 from django.urls import reverse
-from .serializers import CustomUserSerializer
-from rest_framework import generics
+
     
 class SignUp(CreateView):
     model = CustomUser
@@ -22,7 +21,4 @@ class LogIn(LoginView):
     def get_success_url(self):
         return self.request.GET.get('next') or reverse('home:home')
 
-class SignUpAPIView(generics.CreateAPIView):
-    queryset = CustomUser.objects.all()
-    serializer_class = CustomUserSerializer
 

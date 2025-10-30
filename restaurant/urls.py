@@ -1,11 +1,10 @@
 from django.urls import path, include
-from rest_framework.routers import DefaultRouter
-from .views import RestaurantViewSet
+
 
 from . import views
 
-router = DefaultRouter()
-router.register(r'', RestaurantViewSet, basename='restaurant')
+
+
 
 app_name = 'restaurant'
 
@@ -21,6 +20,7 @@ urlpatterns = [
     path('<int:pk>/tables/update/', views.RestaurantTableUpdateView.as_view(), name='restaurant_table_update'),
     path('<int:pk>/tables/delete/', views.RestaurantTableDeleteView.as_view(), name='restaurant_table_delete'),
 
-    path('api/', include(router.urls)),
+    path('api/', include('restaurant.api.urls')),
+
 
 ]

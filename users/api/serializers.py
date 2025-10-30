@@ -1,4 +1,4 @@
-from .models import CustomUser
+from ..models import CustomUser
 from rest_framework import serializers
 
 class CustomUserSerializer(serializers.ModelSerializer):

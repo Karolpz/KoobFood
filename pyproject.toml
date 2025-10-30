@@ -12,6 +12,7 @@ dependencies = [
     "django-extensions>=4.1",
     "djangorestframework>=3.16.1",
     "djangorestframework-simplejwt>=5.5.1",
+    "drf-nested-routers>=0.95.0",
     "environs>=14.3.0",
     "factory-boy==3.3.3",
     "faker==37.8.0",

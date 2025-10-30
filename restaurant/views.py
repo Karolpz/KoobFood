@@ -1,14 +1,12 @@
 from django.urls import reverse_lazy
-from .forms import RestaurantForm, RestaurantTableForm
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.views import generic
 from django.http import HttpResponseForbidden
 from django.shortcuts import redirect
+from django.core.exceptions import PermissionDenied
 
 from .models import Restaurant, Restaurant_Table
-
-from rest_framework import generics, viewsets, permissions
-from .serializers import RestaurantSerializer
+from .forms import RestaurantForm, RestaurantTableForm
 
 # ------------------------RESTAURANT MANAGER--------------------------------
 
@@ -118,23 +116,8 @@ class RestaurantTableDeleteView(LoginRequiredMixin, PermissionRequiredMixin, gen
         return Restaurant_Table.objects.filter(restaurant__manager=self.request.user)
     
 # ------------------------API VIEWS--------------------------------
-class IsManagerOrReadOnlyPermission(permissions.BasePermission):
-    def has_permission(self, request, view):
-        if request.method in permissions.SAFE_METHODS:
-            return True
-        return request.user.is_authenticated and request.user.groups.filter(name='Manager').exists()
-
-    def has_object_permission(self, request, view, obj):
-        if request.method in permissions.SAFE_METHODS:
-            return True
-        return obj.manager == request.user
         
-class RestaurantViewSet(viewsets.ModelViewSet):
-    queryset = Restaurant.objects.all()
-    serializer_class = RestaurantSerializer
-    permission_classes = [IsManagerOrReadOnlyPermission]
-    def perform_create(self, serializer):
-        serializer.save(manager=self.request.user)
+
 
         
     
