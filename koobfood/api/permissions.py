@@ -1,4 +1,5 @@
 from rest_framework import permissions
+from rest_framework.exceptions import PermissionDenied
 
 class IsManagerOrReadOnlyPermission(permissions.BasePermission):
     def has_permission(self, request, view):
@@ -12,5 +13,7 @@ class IsManagerOrReadOnlyPermission(permissions.BasePermission):
         return obj.manager == request.user
 
 class IsManagerPermission(permissions.BasePermission):
-    def has_object_permission(self, request, view, obj):
-        return obj.restaurant.manager == request.user
+    def has_permission(self, request, view):
+        if not request.user.groups.filter(name='Manager').exists():
+            raise PermissionDenied("You must be a manager to access this resource.")
+        return True

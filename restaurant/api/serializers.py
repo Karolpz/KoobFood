@@ -5,6 +5,7 @@ class RestaurantTableSerializer(serializers.ModelSerializer):
     class Meta:
         model = Restaurant_Table
         fields = '__all__'
+        read_only_fields = ['restaurant']
 
 class RestaurantSerializer(serializers.ModelSerializer):
     tables = RestaurantTableSerializer(many=True, read_only=True)
