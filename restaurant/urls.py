@@ -1,10 +1,6 @@
 from django.urls import path, include
 
-
 from . import views
-
-
-
 
 app_name = 'restaurant'
 
@@ -21,6 +17,5 @@ urlpatterns = [
     path('<int:pk>/tables/delete/', views.RestaurantTableDeleteView.as_view(), name='restaurant_table_delete'),
 
     path('api/', include('restaurant.api.urls')),
-
-
+    path('api/', include('reservation.api.urls')),
 ]

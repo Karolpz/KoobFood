@@ -1,19 +1,15 @@
-from .serializers import ReservationSerializer
-from rest_framework import viewsets
-from koobfood.api.permissions import IsManagerOrReadOnlyPermission, IsManagerPermission
-from ..models import Reservation
-from rest_framework.response import Response
+from django.urls import path, include
+from rest_framework_nested import routers
+from .views import ReservationViewSet
+from restaurant.api.views import RestaurantViewSet
 
-class ReservationViewSet(viewsets.ModelViewSet):
-    queryset = Reservation.objects.all()
-    serializer_class = ReservationSerializer
-    permission_classes = [IsManagerOrReadOnlyPermission]
+router = routers.SimpleRouter()
+router.register(r'', RestaurantViewSet, basename='restaurant')
 
-    def perform_create(self, serializer):
-        serializer.save(customuser=self.request.user)
+reservation_router = routers.NestedSimpleRouter(router, r'', lookup='restaurant')
+reservation_router.register(r'reservation', ReservationViewSet, basename='reservation')
 
-    def get_queryset(self):
-        user = self.request.user
-        if user.groups.filter(name='Manager').exists():
-            return Reservation.objects.filter(restaurant__manager=user)
-        return Reservation.objects.filter(customuser=user)
+urlpatterns = [
+    path('', include(router.urls)),
+    path('', include(reservation_router.urls)),
+]
