@@ -11,12 +11,12 @@ class ReservationViewSet(viewsets.ModelViewSet):
     serializer_class = ReservationSerializer
     permission_classes = [IsAuthenticated, IsOwnerOrManagerReadOnlyPermission]
 
-    def perform_create(self, serializer):
-        restaurant_id=self.kwargs.get('restaurant_pk')
-        serializer.save(customuser=self.request.user, restaurant_id=restaurant_id)
-
     def get_queryset(self):
         user = self.request.user
         if user.groups.filter(name='Manager').exists():
             return Reservation.objects.filter(restaurant__manager=user)
         return Reservation.objects.filter(customuser=user)
+    
+    def perform_create(self, serializer):
+        restaurant_id=self.kwargs.get('restaurant_pk')
+        serializer.save(customuser=self.request.user, restaurant_id=restaurant_id)

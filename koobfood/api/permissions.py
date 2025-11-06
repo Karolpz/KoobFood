@@ -19,11 +19,7 @@ class IsManagerOrReadOnlyPermission(permissions.BasePermission):
 class IsOwnerOrManagerReadOnlyPermission(permissions.BasePermission):
 
     def has_object_permission(self, request, view, obj):  
-        if request.method in permissions.SAFE_METHODS:  
-            if obj.customer == request.user:  
-                return True  
-            if obj.restaurant.manager == request.user:  
-                return True  
-            return False  
+        if request.method in permissions.SAFE_METHODS:
+            return obj.customer == request.user or obj.restaurant.manager == request.user
         return obj.customer == request.user
         
