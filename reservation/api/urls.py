@@ -7,7 +7,7 @@ router = routers.SimpleRouter()
 router.register(r'', RestaurantViewSet, basename='restaurant')
 
 reservation_router = routers.NestedSimpleRouter(router, r'', lookup='restaurant')
-reservation_router.register(r'reservation', ReservationViewSet, basename='reservation')
+reservation_router.register(r'reservation', ReservationViewSet, basename='api_reservation')
 
 urlpatterns = [
     path('', include(router.urls)),

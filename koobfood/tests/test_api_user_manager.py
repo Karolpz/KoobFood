@@ -6,7 +6,7 @@ from rest_framework import status
 from users.models import CustomUser
 from django.contrib.auth.models import Group, Permission
 
-class UserManagerAPITest(APITestCase):
+class BaseAPITest(APITestCase):
     @classmethod
     def setUpTestData(cls):
         cls.manager_group, _ = Group.objects.get_or_create(name="Manager")
