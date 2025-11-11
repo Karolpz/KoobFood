@@ -1,11 +1,12 @@
 from django.urls import reverse_lazy
-from .forms import RestaurantForm, RestaurantTableForm
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.views import generic
 from django.http import HttpResponseForbidden
 from django.shortcuts import redirect
+from django.core.exceptions import PermissionDenied
 
 from .models import Restaurant, Restaurant_Table
+from .forms import RestaurantForm, RestaurantTableForm
 
 # ------------------------RESTAURANT MANAGER--------------------------------
 
@@ -31,7 +32,7 @@ class RestaurantManagerDetailView(RestaurantManagerMixin, generic.DetailView):
         context['restaurant_tables'] = self.object.tables.all()
         return context
     
-class RestaurantCeateView( RestaurantManagerMixin, generic.CreateView):
+class RestaurantCreateView( RestaurantManagerMixin, generic.CreateView):
     form_class = RestaurantForm
     template_name = 'restaurant/restaurant_create.html'
     permission_required = 'restaurant.add_restaurant'
@@ -113,6 +114,10 @@ class RestaurantTableDeleteView(LoginRequiredMixin, PermissionRequiredMixin, gen
 
     def get_queryset(self):
         return Restaurant_Table.objects.filter(restaurant__manager=self.request.user)
+    
+# ------------------------API VIEWS--------------------------------
+        
+
 
         
     

@@ -45,6 +45,10 @@ remove-deps:
 add package:
     uv add {{package}}
 
+# Voir les URLs
+urls:
+    uv run python manage.py show_urls
+
 # Installation complète du projet (installe toutes les dépendances via UV)
 init:
     uv add -r requirements.txt

@@ -2,7 +2,7 @@ from django.db import models
 
 class Reservation(models.Model):
     reservation_date = models.DateTimeField()
-    number_of_people = models.IntegerField()
+    number_of_people = models.PositiveIntegerField()
     customer_message = models.TextField(blank=True, null=True)
     restaurant = models.ForeignKey('restaurant.Restaurant', on_delete=models.CASCADE)
     customuser = models.ForeignKey('users.CustomUser', null=True, on_delete=models.CASCADE)
