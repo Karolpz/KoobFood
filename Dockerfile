@@ -36,7 +36,8 @@ USER appuser
 
 EXPOSE 8000
 
-CMD uv run gunicorn --bind 0.0.0.0:$PORT koobfood.wsgi
+CMD ["sh", "-c", "uv run gunicorn --bind 0.0.0.0:$PORT koobfood.wsgi"]
+
 
 ###################################################################
 #-----------------------------PROD--------------------------------#
@@ -57,7 +58,8 @@ USER appuser
 
 EXPOSE 8000 
 
-CMD uv run gunicorn --bind 0.0.0.0:$PORT koobfood.wsgi
+CMD ["sh", "-c", "uv run gunicorn --bind 0.0.0.0:$PORT koobfood.wsgi"]
+
 
 ###################################################################
 #-----------------------------TEST--------------------------------#
