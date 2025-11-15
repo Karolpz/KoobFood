@@ -34,6 +34,8 @@ RUN adduser -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /
 
 USER appuser
 
+EXPOSE 8000
+
 CMD uv run gunicorn --bind 0.0.0.0:$PORT koobfood.wsgi
 
 ###################################################################
@@ -52,6 +54,8 @@ RUN uv sync --no-cache  --no-dev
 RUN adduser -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /app
 
 USER appuser
+
+EXPOSE 8000 
 
 CMD uv run gunicorn --bind 0.0.0.0:$PORT koobfood.wsgi
 
