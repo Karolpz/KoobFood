@@ -20,3 +20,5 @@ class LogIn(LoginView):
     
     def get_success_url(self):
         return self.request.GET.get('next') or reverse('home:home')
+
+
