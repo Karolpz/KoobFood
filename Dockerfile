@@ -36,7 +36,7 @@ USER appuser
 
 EXPOSE 8000
 
-CMD ["sh", "-c", "uv run gunicorn --bind 0.0.0.0:$PORT koobfood.wsgi"]
+CMD ["sh", "-c", "uv run python -m gunicorn --bind 0.0.0.0:${PORT:-8000} koobfood.wsgi:application --workers 2 --timeout 120"]
 
 
 ###################################################################
@@ -58,7 +58,7 @@ USER appuser
 
 EXPOSE 8000 
 
-CMD ["sh", "-c", "uv run gunicorn --bind 0.0.0.0:$PORT koobfood.wsgi"]
+CMD ["sh", "-c", "uv run python -m gunicorn --bind 0.0.0.0:${PORT:-8000} koobfood.wsgi:application --workers 2 --timeout 120"]
 
 
 ###################################################################
