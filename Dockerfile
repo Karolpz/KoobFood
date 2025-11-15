@@ -34,7 +34,7 @@ RUN adduser -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /
 
 USER appuser
 
-CMD ["uv", "run", "gunicorn", "--bind", "0.0.0.0:8000", "koobfood.wsgi"]
+CMD ["uv", "run", "gunicorn", "--bind", "0.0.0.0:$PORT", "koobfood.wsgi"]
 
 ###################################################################
 #-----------------------------PROD--------------------------------#
@@ -53,7 +53,7 @@ RUN adduser -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /
 
 USER appuser
 
-CMD ["uv", "run", "gunicorn", "--bind", "0.0.0.0:8000", "koobfood.wsgi"]
+CMD ["uv", "run", "gunicorn", "--bind", "0.0.0.0:$PORT", "koobfood.wsgi"]
 
 ###################################################################
 #-----------------------------TEST--------------------------------#
