@@ -19,48 +19,6 @@ COPY pyproject.toml uv.lock* ./
 
 RUN uv sync --no-cache  
 
-################################################################### 
-#------------------------------DEV--------------------------------#
-###################################################################
-FROM builder AS local
-
-WORKDIR /app
-
-COPY --from=builder /usr/local/lib/python3.13 /usr/local/lib/python3.13
-COPY --from=builder /usr/local/bin/uv /usr/local/bin/uv
-COPY . .
-
-RUN adduser -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /app
-
-USER appuser
-
-EXPOSE 8000
-
-CMD ["sh", "-c", "uv run python -m gunicorn --bind 0.0.0.0:${PORT:-8000} koobfood.wsgi:application --workers 2 --timeout 120"]
-
-
-###################################################################
-#-----------------------------PROD--------------------------------#
-###################################################################
-
-FROM builder AS prod
-
-WORKDIR /app
-
-COPY --from=builder /usr/local/lib/python3.13 /usr/local/lib/python3.13
-COPY --from=builder /usr/local/bin/uv /usr/local/bin/uv
-COPY . .
-
-RUN uv sync --no-cache  --no-dev
-RUN adduser -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /app
-
-USER appuser
-
-EXPOSE 8000 
-
-CMD ["sh", "-c", "uv run python -m gunicorn --bind 0.0.0.0:${PORT:-8000} koobfood.wsgi:application --workers 2 --timeout 120"]
-
-
 ###################################################################
 #-----------------------------TEST--------------------------------#
 ###################################################################
@@ -76,6 +34,49 @@ RUN adduser -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /
 USER appuser
 
 CMD ["sleep", "infinity"]
+
+###################################################################
+#------------------------------DEV--------------------------------#
+###################################################################
+FROM builder AS local
+
+WORKDIR /app
+
+COPY --from=builder /usr/local/lib/python3.13 /usr/local/lib/python3.13
+COPY --from=builder /usr/local/bin/uv /usr/local/bin/uv
+COPY --from=builder /app/.venv /app/.venv  # <-- AJOUTEZ CETTE LIGNE
+COPY . .
+
+RUN adduser -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /app
+
+USER appuser
+
+EXPOSE 8000
+
+CMD ["/app/.venv/bin/gunicorn", "--bind", "0.0.0.0:8000", "koobfood.wsgi:application", "--workers", "2", "--timeout", "120"]
+
+
+###################################################################
+#-----------------------------PROD--------------------------------#
+###################################################################
+FROM builder AS prod
+
+WORKDIR /app
+
+COPY --from=builder /usr/local/lib/python3.13 /usr/local/lib/python3.13
+COPY --from=builder /usr/local/bin/uv /usr/local/bin/uv
+COPY . .
+
+RUN uv sync --no-cache --no-dev
+RUN adduser -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /app
+
+USER appuser
+
+EXPOSE 8000 
+
+CMD ["/app/.venv/bin/gunicorn", "--bind", "0.0.0.0:8000", "koobfood.wsgi:application", "--workers", "2", "--timeout", "120"]
+
+
 
 # ########LOCAL#######
 # # Image Python légère avec Debian
