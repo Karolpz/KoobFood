@@ -26,8 +26,7 @@ FROM builder AS test
 
 WORKDIR /app
 
-COPY --from=builder /usr/local/lib/python3.13 /usr/local/lib/python3.13
-COPY --from=builder /usr/local/bin/uv /usr/local/bin/uv 
+COPY --from=builder /app/.venv /app/.venv
 COPY . .
 
 RUN adduser -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /app
@@ -42,8 +41,6 @@ FROM builder AS local
 
 WORKDIR /app
 
-COPY --from=builder /usr/local/lib/python3.13 /usr/local/lib/python3.13
-COPY --from=builder /usr/local/bin/uv /usr/local/bin/uv
 COPY --from=builder /app/.venv /app/.venv
 COPY . .
 
@@ -63,7 +60,6 @@ FROM builder AS prod
 
 WORKDIR /app
 
-COPY --from=builder /usr/local/lib/python3.13 /usr/local/lib/python3.13
 COPY --from=builder /usr/local/bin/uv /usr/local/bin/uv
 COPY . .
 
