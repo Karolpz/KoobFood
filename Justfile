@@ -3,7 +3,7 @@ set shell := ["powershell", "-Command"]
 
 # Lancer le serveur Django
 run:
-     uv run python manage.py runserver
+     uv run python manage.py runserver 8001
 
 # Créer les migrations
 makemigrations:
@@ -52,6 +52,22 @@ urls:
 # Build une image Docker
 build:
     docker compose up --build -d
+
+# Naviguer dans le python shell
+shell:
+    uv run python manage.py shell
+
+# Environnement production
+env-prod:
+    $env:DJANGO_MODE="production"
+
+# Environnement test
+env-test:
+    $env:DJANGO_MODE="test"
+
+# Environnement local
+env-local:
+    $env:DJANGO_MODE="local"
 
 # Installation complète du projet (installe toutes les dépendances via UV)
 init:
