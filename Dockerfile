@@ -56,23 +56,24 @@ CMD ["/app/.venv/bin/gunicorn", "--bind", "0.0.0.0:8000", "koobfood.wsgi:applica
 ###################################################################
 #-----------------------------PROD--------------------------------#
 ###################################################################
-FROM builder AS prod
+FROM python:3.13-slim AS prod
 
 WORKDIR /app
 
-COPY --from=builder /usr/local/bin/uv /usr/local/bin/uv
+RUN apt-get update && apt-get install -y libpq5 && rm -rf /var/lib/apt/lists/*
+
+COPY --from=builder /app/.venv /app/.venv
 COPY . .
 
-RUN uv sync --no-cache --no-dev
 RUN adduser -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /app
 
 USER appuser
 
-EXPOSE 8000 
+EXPOSE 8000
 
-CMD ["/app/.venv/bin/gunicorn", "--bind", "0.0.0.0:8000", "koobfood.wsgi:application", "--workers", "2", "--timeout", "120"]
-
-
+CMD ["/app/.venv/bin/gunicorn", "--bind", "0.0.0.0:8000", \
+    "--workers", "4", "--timeout", "120", \
+    "--access-logfile", "-", "koobfood.wsgi:application"]
 
 # ########LOCAL#######
 # # Image Python légère avec Debian
