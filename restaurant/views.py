@@ -65,6 +65,9 @@ class RestaurantListView(generic.ListView):
     template_name = 'restaurant/restaurant_list.html'
     context_object_name = 'restaurant_list'
     paginate_by = 5
+
+    def get_queryset(self):
+        return Restaurant.objects.all().order_by('id')
     
 class RestaurantDetailView(generic.DetailView):
     model = Restaurant
