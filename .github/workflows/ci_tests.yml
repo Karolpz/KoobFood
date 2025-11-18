@@ -62,4 +62,4 @@
           run: uv run python manage.py test
 
 
-          #test: ci.yml
+          #test: ci.yml..
