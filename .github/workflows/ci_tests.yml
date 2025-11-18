@@ -1,0 +1,65 @@
+  name: Tests Django (CI)
+
+  on:
+    pull_request:
+      branches: ["*"]
+    push:
+      branches: ["*"]
+
+  jobs:
+    test:
+      runs-on: ubuntu-latest
+
+      services:
+        postgres:
+          image: postgres:14
+          env:
+            POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+            POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+            POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+          ports:
+            - 5432:5432
+          options: >-
+            --health-cmd="pg_isready"
+            --health-interval=10s
+            --health-timeout=5s
+            --health-retries=5
+
+      env:
+        DJANGO_SETTINGS_MODULE: koobfood.settings.test
+        DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        SECRET_KEY: ${{ secrets.SECRET_KEY }}
+
+      steps:
+        - name: Cloner le dépôt
+          uses: actions/checkout@v3
+
+        - name: Installer Python
+          uses: actions/setup-python@v5
+          with:
+            python-version: '3.11'
+
+        - name: Installer UV et dépendances
+          run: |
+            python -m pip install --upgrade pip
+            pip install uv
+            uv add -r requirements.txt
+
+        - name: Créer la base de test si elle n'existe pas
+          env:
+            PGPASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+            POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+            POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+          run: |
+            echo "Vérification de la base ${POSTGRES_DB}_test..."
+            psql -h localhost -U $POSTGRES_USER -p 5432 -d postgres -tc "SELECT 1 FROM pg_database WHERE datname = '${POSTGRES_DB}_test'" | grep -q 1 || \
+            psql -h localhost -U $POSTGRES_USER -p 5432 -d postgres -c "CREATE DATABASE ${POSTGRES_DB}_test;"
+
+        - name: Appliquer les migrations
+          run: uv run python manage.py migrate
+
+        - name: Lancer les tests
+          run: uv run python manage.py test
+
+
+          #test: ci.yml
