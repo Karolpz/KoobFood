@@ -57,17 +57,6 @@ build:
 shell:
     uv run python manage.py shell
 
-# Environnement production
-env-prod:
-    $env:DJANGO_MODE="production"
-
-# Environnement test
-env-test:
-    $env:DJANGO_MODE="test"
-
-# Environnement local
-env-local:
-    $env:DJANGO_MODE="local"
 
 # Installation complète du projet (installe toutes les dépendances via UV)
 init:
@@ -75,3 +64,11 @@ init:
     just makemigrations
     just migrate
     just run
+
+
+# $env:DJANGO_MODE="production"
+# $env:DJANGO_MODE="test"
+# $env:DJANGO_MODE="local"
+
+# from django.conf import settings
+# print(settings.DATABASES["default"])
