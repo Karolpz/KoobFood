@@ -53,6 +53,14 @@ urls:
 build:
     docker compose up --build -d
 
+# Stopper les conteneurs Docker
+down:
+    docker compose down
+
+# Stopper les conteneurs Docker et supprimer les volumes
+down-v:
+    docker compose down -v
+
 # Naviguer dans le python shell
 shell:
     uv run python manage.py shell

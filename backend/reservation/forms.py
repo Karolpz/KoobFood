@@ -7,7 +7,15 @@ from restaurant.models import Restaurant_Table
 class ReservationForm(forms.ModelForm):
     class Meta:
         model = Reservation
-        fields = ["reservation_date", "number_of_people"]
+        fields = ["reservation_date", "number_of_people", "customer_message"]
+        labels = {
+            "reservation_date": "Date et heure de la réservation",
+            "number_of_people": "Nombre de personnes",
+            "customer_message": "Message du client (optionnel)",
+        }
+        widgets = {
+            "reservation_date": forms.DateTimeInput(attrs={"type": "datetime-local"}),
+        }
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop("user", None)
