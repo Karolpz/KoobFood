@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <h2>Nouvelle réservation reçue</h2>
+        <p>Bonjour,</p>
+        <p>Une nouvelle réservation a été effectuée dans votre restaurant {{ reservation.restaurant.name }} :</p>
+        <ul>
+            <li><strong>Date et heure de la réservation :</strong> {{ reservation.reservation_date }}</li>
+            <li><strong>Nombre de personnes :</strong> {{ reservation.number_of_people }}</li>
+            <li><strong>Client :</strong> {{ reservation.customuser.first_name }} {{ reservation.customuser.last_name }}</li>
+            <li><strong>Email du client :</strong> {{ reservation.customuser.email }}</li>
+        </ul>
+
+        <p>Cordialement,<br>L'équipe KoobFood</p>

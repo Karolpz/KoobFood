@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <h2>Votre réservation a été confirmée</h2>
+        <p>Bonjour {{ reservation.customuser.first_name }},</p>
+        <p>Votre réservation dans le restaurant {{ reservation.restaurant.name }} a été confirmée :</p>
+        <ul>
+            <li><strong>Date et heure de la réservation :</strong> {{ reservation.reservation_date }}</li>
+            <li><strong>Nombre de personnes :</strong> {{ reservation.number_of_people }}</li>
+        </ul>
+
+        <p>Cordialement,<br>L'équipe KoobFood</p>
+    </body>

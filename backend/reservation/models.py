@@ -7,6 +7,13 @@ class Reservation(models.Model):
     restaurant = models.ForeignKey('restaurant.Restaurant', on_delete=models.CASCADE)
     customuser = models.ForeignKey('users.CustomUser', null=True, on_delete=models.CASCADE)
 
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        from .tasks import send_mail_after_reservation_manager, send_mail_after_reservation_customer
+        send_mail_after_reservation_manager.delay(self.id)
+        send_mail_after_reservation_customer.delay(self.id)
+
+
     def __str__(self):
         return f"Reservation pour {self.number_of_people} personnes à {self.restaurant.name} le {self.reservation_date.strftime('%Y-%m-%d %H:%M')}"
     

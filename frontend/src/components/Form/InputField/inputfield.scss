@@ -1,0 +1,7 @@
+@use '../../../styles/variables.scss' as *;
+
+.form-error {
+  color: $color-accent;
+  margin-top: 0.25rem;
+  font-weight: bold;
+}

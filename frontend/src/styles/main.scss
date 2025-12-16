@@ -1,0 +1,24 @@
+//GLOBAL\\
+@use './variables.scss' as *;
+@use './global.scss' as *;
+@use './mixins.scss' as *;
+
+
+//PAGES\\
+@use '../pages/Home/home.scss' as *;
+@use '../pages/Restaurant/restaurant.scss' as *;
+@use '../pages/Reservation/reservation.scss' as *;
+@use '../pages/Login/login.scss' as *;
+@use '../pages/Signup/signup.scss' as *;
+
+//LAYOUT\\
+@use '../layout/Header/header.scss' as *;
+@use '../layout/Footer/footer.scss' as *;
+
+//COMPONENTS\\
+@use '../components/Form/InputField/inputfield.scss' as *;
+@use '../components/Button/button.scss' as *;
+// @use './components/Card/card.scss' as *;
+// @use './components/Modal/modal.scss' as *;
+@use '../components/Navbar/navbar.scss' as *;
+// @use './components/Form/form.scss' as *;

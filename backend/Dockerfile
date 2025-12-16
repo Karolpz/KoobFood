@@ -20,21 +20,6 @@ COPY pyproject.toml uv.lock* ./
 RUN uv sync --no-cache  
 
 ###################################################################
-#-----------------------------TEST--------------------------------#
-###################################################################
-FROM builder AS test
-
-WORKDIR /app
-
-COPY --from=builder /app/.venv /app/.venv
-COPY . .
-
-RUN adduser -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /app
-USER appuser
-
-CMD ["sleep", "infinity"]
-
-###################################################################
 #------------------------------DEV--------------------------------#
 ###################################################################
 FROM builder AS local
@@ -50,7 +35,7 @@ USER appuser
 
 EXPOSE 8000
 
-CMD ["/app/.venv/bin/gunicorn", "--bind", "0.0.0.0:8000", "koobfood.wsgi:application", "--workers", "2", "--timeout", "120"]
+CMD ["sleep", "infinity"]
 
 
 ###################################################################

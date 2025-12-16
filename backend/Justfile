@@ -3,15 +3,15 @@ set shell := ["powershell", "-Command"]
 
 # Lancer le serveur Django
 run:
-     uv run python manage.py runserver 8001
+    docker compose exec koobfood uv run manage.py runserver 0.0.0.0:8000
 
 # Créer les migrations
 makemigrations:
-    uv run python manage.py makemigrations
+    docker compose exec koobfood uv run manage.py makemigrations
 
 # Appliquer les migrations
 migrate:
-    uv run python manage.py migrate
+    docker compose exec koobfood uv run manage.py migrate
 
 # Créer un superutilisateur
 superuser:
@@ -23,11 +23,11 @@ test *args='':
 
 # Lancer les tests avec coverage
 coverage :
-    uv run coverage run manage.py test
+    docker compose exec koobfood coverage run manage.py test
 
 # Afficher le rapport de coverage
 report:
-    uv run coverage report
+    docker compose exec koobfood coverage report
 
 # Nettoyer les fichiers inutiles
 clean:
@@ -47,11 +47,19 @@ add package:
 
 # Voir les URLs
 urls:
-    uv run python manage.py show_urls
+    docker compose exec koobfood uv run manage.py show_urls
+
+# Build toutes les images Docker
+build-all:
+    docker compose up --build -d
 
 # Build une image Docker
-build:
-    docker compose up --build -d
+build image:
+    docker compose build {{image}}
+
+# Démarrer les conteneurs Docker
+up:
+    docker compose up -d
 
 # Stopper les conteneurs Docker
 down:
@@ -61,9 +69,17 @@ down:
 down-v:
     docker compose down -v
 
+# Redémarrer les conteneurs Docker
+restart service:
+    docker compose restart {{service}}
+
 # Naviguer dans le python shell
 shell:
-    uv run python manage.py shell
+    uv run python manage.py shell_plus
+
+# Suivre les logs d'un service Docker
+logs service:
+    docker compose logs -f {{service}}
 
 
 # Installation complète du projet (installe toutes les dépendances via UV)

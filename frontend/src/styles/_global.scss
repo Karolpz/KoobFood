@@ -1,0 +1,65 @@
+@use './variables.scss' as *;
+
+/* =========================
+   RESET / BASE
+========================= */
+
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+    background-color: $color-bg;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+
+    color: $color-text;
+}
+
+/* Links */
+a {
+    color: $color-secondary;
+    text-decoration: none;
+    transition: color 0.3s ease;
+
+    &:hover {
+        color: darken($color-accent, 10%);
+    }
+}
+
+/* Images */
+img {
+    max-width: 100%;
+    display: block;
+}
+
+/* Lists */
+ul,
+ol {
+    list-style: none;
+}
+
+/* Buttons */
+button {
+    cursor: pointer;
+    font-family: inherit;
+    border: none;
+    background: none;
+}
+
+/* Form elements */
+input,
+textarea,
+select {
+    font-family: inherit;
+    outline: none;
+}

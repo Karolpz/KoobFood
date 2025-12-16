@@ -10,6 +10,10 @@ from restaurant.models import Restaurant_Table
 from django.utils import timezone
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 # -----------------------RESERVATIONS CUSTOMER--------------------------------
 
 def signup_or_login(request, restaurant_id):
@@ -32,6 +36,10 @@ class ReservationCreateView(LoginRequiredMixin, generic.CreateView):
             'restaurant_id': self.kwargs['restaurant_id'],
             'reservation_id': self.object.pk
         })
+    
+    def form_valid(self, form):
+        logger.info(f"Nouvelle réservation créée par {self.request.user.username} pour le restaurant ID {self.kwargs['restaurant_id']} le {form.cleaned_data['reservation_date']}.")
+        return super().form_valid(form)
 
 
 class ReservationSuccessView(generic.DetailView):

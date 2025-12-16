@@ -1,0 +1,11 @@
+@use '../../styles/variables.scss' as *;
+
+.footer{
+    display: flex;  
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-shadow: $box-shadow-up;
+    background-color: $color-primary;
+    color: $color-text;
+}

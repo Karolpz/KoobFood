@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <h2>Rapport quotidien des réservations</h2>
+
+    {% if reservations %}
+        <p>Le site a enregistré {{ reservations|length }} réservations pour aujourd'hui.</p>
+        <p>Voici les détails par restaurant :</p>
+        <ul>
+            {% for item in restaurants %}
+                <li>Restaurant : {{ item.restaurant__name }} - Réservations : {{ item.total }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Aucune réservation pour aujourd'hui.</p>
+    {% endif %}
+</body>
+</html>
