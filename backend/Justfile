@@ -1,61 +1,41 @@
 # Justfile - automatisation Django (Windows + PowerShell)
 set shell := ["powershell", "-Command"]
 
+# --- COMMANDES DANS LE CONTENEUR (Rapides) ---
+
 # Lancer le serveur Django
 run:
-    docker compose exec koobfood uv run manage.py runserver 0.0.0.0:8000
+    docker compose exec koobfood /app/.venv/bin/python manage.py runserver 0.0.0.0:8000
 
 # Créer les migrations
 makemigrations:
-    docker compose exec koobfood uv run manage.py makemigrations
+    docker compose exec koobfood /app/.venv/bin/python manage.py makemigrations
 
 # Appliquer les migrations
 migrate:
-    docker compose exec koobfood uv run manage.py migrate
+    docker compose exec koobfood /app/.venv/bin/python manage.py migrate
 
 # Créer un superutilisateur
 superuser:
-    uv run python manage.py createsuperuser
-
-# Lancer les tests
-test *args='':
-    uv run python manage.py test {{args}}
-
-# Lancer les tests avec coverage
-coverage :
-    docker compose exec koobfood coverage run manage.py test
-
-# Afficher le rapport de coverage
-report:
-    docker compose exec koobfood coverage report
-
-# Nettoyer les fichiers inutiles
-clean:
-    Get-ChildItem -Recurse -Include "__pycache__", "*.pyc" | Remove-Item -Recurse -Force
-
-# Installer les dépendances
-install-deps:
-    uv add -r requirements.txt
-
-# Supprimer les dépendances
-remove-deps:
-    uv remove -r requirements.txt
-
-# Installer les packages
-add package:
-    uv add {{package}}
+    docker compose exec koobfood /app/.venv/bin/python manage.py createsuperuser
 
 # Voir les URLs
 urls:
-    docker compose exec koobfood uv run manage.py show_urls
+    docker compose exec koobfood /app/.venv/bin/python manage.py show_urls
+
+# Lancer les tests avec coverage
+coverage:
+    docker compose exec koobfood /app/.venv/bin/python -m coverage run manage.py test
+
+# Afficher le rapport de coverage
+report:
+    docker compose exec koobfood /app/.venv/bin/python -m coverage report
+
+# --- COMMANDES DE MAINTENANCE DOCKER ---
 
 # Build toutes les images Docker
 build-all:
     docker compose up --build -d
-
-# Build une image Docker
-build image:
-    docker compose build {{image}}
 
 # Démarrer les conteneurs Docker
 up:
@@ -65,35 +45,20 @@ up:
 down:
     docker compose down
 
-# Stopper les conteneurs Docker et supprimer les volumes
-down-v:
-    docker compose down -v
-
-# Redémarrer les conteneurs Docker
+# Redémarrer un service
 restart service:
     docker compose restart {{service}}
 
-# Naviguer dans le python shell
-shell:
-    uv run python manage.py shell_plus
-
-# Suivre les logs d'un service Docker
+# Suivre les logs
 logs service:
     docker compose logs -f {{service}}
 
+# --- COMMANDES LOCALES (UV sur Windows pour l'IDE) ---
 
-# Installation complète du projet (installe toutes les dépendances via UV)
-init:
-    uv add -r requirements.txt
-    just makemigrations
-    just migrate
-    just run
+# Nettoyer les fichiers inutiles
+clean:
+    Get-ChildItem -Recurse -Include "__pycache__", "*.pyc" | Remove-Item -Recurse -Force
 
-
-# $env:DJANGO_MODE="production"
-# $env:DJANGO_MODE="test"
-# $env:DJANGO_MODE="local"
-
-# from django.conf import settings
-# print(settings.DATABASES["default"])
-# print(settings.DEBUG)
+# Ajouter un package (ajoute au pyproject.toml ET réinstalle dans Docker au prochain build)
+add package:
+    uv add {{package}}

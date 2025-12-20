@@ -18,7 +18,7 @@ services:
     volumes:
       - ./backend:/app
       - /app/.venv
-    command: uv run manage.py runserver 0.0.0.0:8000
+    command: ["sleep", "infinity"]
   db:
     image: postgres:17
     environment:
